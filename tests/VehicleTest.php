@@ -110,29 +110,29 @@ class VehicleTest extends TestCase
 
     private function method($object, $name)
     {
-        $class_methods = get_class_methods($object);
+        $classMethods = get_class_methods($object);
 
         echo PHP_EOL;
-        foreach ($this->calledMethods[$name] as $method_name) {
+        foreach ($this->calledMethods[$name] as $methodName) {
             try {
-                $reflection = new \ReflectionMethod(get_class($object), $method_name);
+                $reflection = new \ReflectionMethod(get_class($object), $methodName);
                 if (!$reflection->getNumberOfRequiredParameters()) {
-                    echo $object->$method_name() . PHP_EOL;
+                    echo $object->$methodName() . PHP_EOL;
                 } else {
-                    echo $object->$method_name('stone') . PHP_EOL;          // Fix for KAMAZ object
+                    echo $object->$methodName('stone') . PHP_EOL;          // Fix for KAMAZ object
                 }
             } catch (Exception $e) {
-                $this->fail('Method ' . $method_name . ' not supported');
+                $this->fail('Method ' . $methodName . ' not supported');
             }
         }
 
-        foreach ($class_methods as $method_name) {
-            if (preg_match('/(s|g)et*|__construct/', $method_name, $matches)) {
+        foreach ($classMethods as $methodName) {
+            if (preg_match('/(s|g)et*|__construct/', $methodName)) {
                 continue;       // Skip for setters, getters and constructors
             }
             $this->assertTrue(
-                in_array($method_name, $this->calledMethods[$name]),
-                'Wrong method ' . $method_name
+                in_array($methodName, $this->calledMethods[$name]),
+                'Wrong method ' . $methodName
             );
         }
     }
