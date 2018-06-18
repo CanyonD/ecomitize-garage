@@ -3,11 +3,7 @@ namespace unit\ecomitize\garage;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Exception;
-use ecomitize\garage\Vehicle;
-use ecomitize\garage\BMW;
-use ecomitize\garage\Boat;
-use ecomitize\garage\Helicopter;
-use ecomitize\garage\Kamaz;
+use ecomitize\garage\{Vehicle, BMW, Boat, Helicopter, Kamaz};
 
 class VehicleTest extends TestCase {
 

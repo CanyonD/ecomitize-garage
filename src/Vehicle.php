@@ -1,7 +1,6 @@
 <?php
 namespace ecomitize\garage;
 
-use PHPUnit\Runner\Exception;
 
 class Vehicle {
 	private $name       = '';
