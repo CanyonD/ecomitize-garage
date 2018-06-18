@@ -7,11 +7,11 @@ class BMW extends Vehicle {
 		$this->setFuel(Vehicle::FUEL_GAS);
 	}
 
-	public function move() {
+	public function move() : string {
 		return parent::move();
 	}
 
-	public function musicOn() {
+	public function musicOn() : string {
 		return parent::musicOn();
 	}
 }

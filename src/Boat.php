@@ -7,7 +7,7 @@ class Boat extends Vehicle {
 		$this->setFuel(Vehicle::FUEL_GAS);
 	}
 
-	public function swim() {
+	public function swim() : string {
 		return parent::swim();
 	}
 }
