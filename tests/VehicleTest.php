@@ -116,11 +116,8 @@ class VehicleTest extends TestCase
         foreach ($this->calledMethods[$name] as $methodName) {
             try {
                 $reflection = new \ReflectionMethod(get_class($object), $methodName);
-                if (!$reflection->getNumberOfRequiredParameters()) {
-                    echo $object->$methodName() . PHP_EOL;
-                } else {
-                    echo $object->$methodName('stone') . PHP_EOL;          // Fix for KAMAZ object
-                }
+                $numberParams = $reflection->getNumberOfRequiredParameters();
+                echo $numberParams ? $object->$methodName('stone') . PHP_EOL : $object->$methodName() . PHP_EOL;
             } catch (Exception $e) {
                 $this->fail('Method ' . $methodName . ' not supported');
             }

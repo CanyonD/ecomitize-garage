@@ -8,7 +8,9 @@
     <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
     <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
-    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod.Found">
+        <severity>1</severity>
+    </rule>
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
     <rule ref="Squiz.PHP.NonExecutableCode"/>
 
