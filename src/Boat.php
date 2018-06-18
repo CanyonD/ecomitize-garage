@@ -1,13 +1,16 @@
 <?php
 namespace ecomitize\garage;
 
-class Boat extends Vehicle {
-	public function __construct() {
-		$this->setName(Vehicle::BOAT);
-		$this->setFuel(Vehicle::FUEL_GAS);
-	}
+class Boat extends Vehicle
+{
+    public function __construct()
+    {
+        $this->setName(Vehicle::BOAT);
+        $this->setFuel(Vehicle::FUEL_GAS);
+    }
 
-	public function swim() : string {
-		return parent::swim();
-	}
+    public function swim() : string
+    {
+        return parent::swim();
+    }
 }

@@ -1,9 +1,9 @@
 <?php
-require_once ('Vehicle.php');
-require_once ('BMW.php');
-require_once ('Boat.php');
-require_once ('Helicopter.php');
-require_once ('Kamaz.php');
+require_once('Vehicle.php');
+require_once('BMW.php');
+require_once('Boat.php');
+require_once('Helicopter.php');
+require_once('Kamaz.php');
 
 $vehicle = new \ecomitize\garage\BMW();
 echo $vehicle->move() . PHP_EOL;
