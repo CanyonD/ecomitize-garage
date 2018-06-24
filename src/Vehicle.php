@@ -17,6 +17,42 @@ class Vehicle
     public const FUEL_DIESEL    = 'diesel';
     public const FUEL_PETROL    = 'petrol';
 
+    public const SUPPORTED_METHODS = array(
+        Vehicle::BMW => array(
+            'move',
+            'musicOn',
+            'stop',
+            'refuel'
+        ),
+        Vehicle::BOAT => array(
+            'swim',
+            'stop',
+            'refuel'
+        ),
+        Vehicle::HELICOPTER => array(
+            'takeOff',
+            'fly',
+            'landing',
+            'stop',
+            'refuel'
+        ),
+        Vehicle::KAMAZ => array(
+            'move',
+            'stop',
+            'load',
+            'move',
+            'stop',
+            'emptyLoads',
+            'stop',
+            'refuel'
+        ),
+    );
+
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
     /**
      * @return mixed
      */
@@ -55,12 +91,13 @@ class Vehicle
     /**
      * @return string
      */
-    protected function ping() : string
+    public function ping() : string
     {
         return 'I am ' . $this->getName() .'!';
     }
 
     /**
+     * @param string $fuel
      * @return string
      */
     public function refuel($fuel = null) : string
@@ -70,66 +107,98 @@ class Vehicle
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function stop() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' stopped';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function move() : string
+    public function move() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' moving';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function musicOn() : string
+    public function musicOn() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' music switched on';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function takeOff() : string
+    public function takeOff() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' took off';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function landing() : string
+    public function landing() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' landing';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function fly() : string
+    public function fly() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' flying';
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
-    protected function swim() : string
+    public function swim() : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' swimming';
     }
 
     /**
      * @param string $object
      * @return string
+     * @throws \Exception
      */
-    protected function load($object) : string
+    public function load($object) : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         $this->loadObject = $object;
         return $this->getName() . ' load ' . $object;
     }
@@ -137,9 +206,20 @@ class Vehicle
     /**
      * @param string $object
      * @return string
+     * @throws \Exception
      */
-    protected function emptyLoads($object) : string
+    public function emptyLoads($object) : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' unload ' . ($object ? $object : $this->loadObject);
+    }
+
+    private function isSupported($method)
+    {
+//      print_r($method);
+//      print_r($this->name);
+        return !in_array($method, Vehicle::SUPPORTED_METHODS[$this->name]);
     }
 }

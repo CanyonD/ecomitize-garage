@@ -4,71 +4,36 @@ namespace unit\ecomitize\garage;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Exception;
 use ecomitize\garage\Vehicle;
-use ecomitize\garage\BMW;
-use ecomitize\garage\Boat;
-use ecomitize\garage\Helicopter;
-use ecomitize\garage\Kamaz;
 
 class VehicleTest extends TestCase
 {
 
     /**
-     * @var BMW $bmw
+     * @var Vehicle $bmw
      */
     private $bmw;
 
     /**
-     * @var Kamaz $kamaz
+     * @var Vehicle $kamaz
      */
     private $kamaz;
 
     /**
-     * @var Boat $boat
+     * @var Vehicle $boat
      */
     private $boat;
 
     /**
-     * @var Helicopter $helicopter
+     * @var Vehicle $helicopter
      */
     private $helicopter;
 
-    private $calledMethods = array(
-        Vehicle::BMW => array(
-            'move',
-            'musicOn',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::BOAT => array(
-            'swim',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::HELICOPTER => array(
-            'takeOff',
-            'fly',
-            'landing',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::KAMAZ => array(
-            'move',
-            'stop',
-            'load',
-            'move',
-            'stop',
-            'emptyLoads',
-            'stop',
-            'refuel'
-        ),
-    );
-
     public function setUp()
     {
-        $this->bmw = new BMW();
-        $this->boat = new Boat();
-        $this->helicopter = new Helicopter();
-        $this->kamaz = new Kamaz();
+        $this->bmw = new Vehicle(Vehicle::BMW);
+        $this->boat = new Vehicle(Vehicle::BOAT);
+        $this->helicopter = new Vehicle(Vehicle::HELICOPTER);
+        $this->kamaz = new Vehicle(Vehicle::KAMAZ);
     }
 
     public function tearDown()
@@ -88,7 +53,7 @@ class VehicleTest extends TestCase
     }
 
     /**
-     * @param Vehicle|BMW|Boat|Helicopter|Kamaz $object
+     * @param Vehicle $object
      * @param string $name
      */
     private function init($object, $name)
@@ -113,24 +78,31 @@ class VehicleTest extends TestCase
         $classMethods = get_class_methods($object);
 
         echo PHP_EOL;
-        foreach ($this->calledMethods[$name] as $methodName) {
+        foreach (Vehicle::SUPPORTED_METHODS[$name] as $methodName) {
             try {
                 $reflection = new \ReflectionMethod(get_class($object), $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
                 echo $numberParams ? $object->$methodName('stone') . PHP_EOL : $object->$methodName() . PHP_EOL;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->fail('Method ' . $methodName . ' not supported');
             }
         }
 
         foreach ($classMethods as $methodName) {
-            if (preg_match('/(s|g)et*|__construct/', $methodName)) {
+            if (preg_match('/(s|g)et*|__construct|ping/', $methodName) ||
+                in_array($methodName, Vehicle::SUPPORTED_METHODS[$name])
+            ) {
                 continue;       // Skip for setters, getters and constructors
             }
-            $this->assertTrue(
-                in_array($methodName, $this->calledMethods[$name]),
-                'Wrong method ' . $methodName
-            );
+            $exception = false;
+            try {
+                $reflection = new \ReflectionMethod(get_class($object), $methodName);
+                $numberParams = $reflection->getNumberOfRequiredParameters();
+                echo $numberParams ? $object->$methodName('stone') . PHP_EOL : $object->$methodName() . PHP_EOL;
+            } catch (\Exception $e) {
+                $exception = true;
+            }
+            $this->assertTrue($exception, 'Wrong method ' . $methodName);
         }
     }
 }
