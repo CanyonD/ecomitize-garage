@@ -1,7 +1,11 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use PHPUnit\Runner\Exception;
+use ecomitize\garage\Actions\Load;
+use ecomitize\garage\Actions\Move;
+use ecomitize\garage\Actions\Refuel;
+use ecomitize\garage\Actions\Stopped;
+use ecomitize\garage\Actions\EmptyLoad;
 
 class Kamaz
 {
@@ -28,6 +32,14 @@ class Kamaz
         $this->vehicle->setName($this->name);
         $this->vehicle->setFuel($this->fuel);
         $this->vehicle->setSupportedMethods($this->methods);
+        $this->vehicle->addMethod($this->methods[0], (new Move())());
+        $this->vehicle->addMethod($this->methods[1], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[2], (new Load())());
+        $this->vehicle->addMethod($this->methods[3], (new Move())());
+//      $this->vehicle->addMethod($this->methods[4], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[5], (new EmptyLoad())());
+//      $this->vehicle->addMethod($this->methods[6], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[7], (new Refuel())());
     }
 
     public function __call($name, $arguments)

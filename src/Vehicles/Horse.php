@@ -1,7 +1,8 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use PHPUnit\Runner\Exception;
+use ecomitize\garage\Actions\Move;
+use ecomitize\garage\Actions\Stopped;
 
 class Horse
 {
@@ -20,6 +21,8 @@ class Horse
         $this->vehicle = new Vehicle();
         $this->vehicle->setName($this->name);
         $this->vehicle->setSupportedMethods($this->methods);
+        $this->vehicle->addMethod($this->methods[0], (new Move())());
+        $this->vehicle->addMethod($this->methods[1], (new Stopped())());
     }
 
     public function __call($name, $arguments)

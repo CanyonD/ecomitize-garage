@@ -2,7 +2,9 @@
 namespace ecomitize\garage\Vehicles;
 
 use ecomitize\garage\Actions\Move;
-use PHPUnit\Runner\Exception;
+use ecomitize\garage\Actions\MusicOn;
+use ecomitize\garage\Actions\Refuel;
+use ecomitize\garage\Actions\Stopped;
 
 class BMW
 {
@@ -25,7 +27,10 @@ class BMW
         $this->vehicle->setName($this->name);
         $this->vehicle->setFuel($this->fuel);
         $this->vehicle->setSupportedMethods($this->methods);
-//      $this->vehicle->addMethod('_move', new Move($this->name));
+        $this->vehicle->addMethod($this->methods[0], (new Move())());
+        $this->vehicle->addMethod($this->methods[1], (new MusicOn())());
+        $this->vehicle->addMethod($this->methods[2], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[3], (new Refuel())());
     }
 
     public function __call($name, $arguments)

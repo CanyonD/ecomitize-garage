@@ -3,7 +3,7 @@ namespace ecomitize\garage\Actions;
 
 use ecomitize\garage\Vehicles\Vehicle;
 
-class Move implements Action
+class Swim implements Action
 {
     public function __invoke()
     {
@@ -11,7 +11,7 @@ class Move implements Action
             /**
              * @var Vehicle $this
              */
-            return $this->getName() . ' moving';
+            return $this->getName() . ' swimming';
         };
     }
 }

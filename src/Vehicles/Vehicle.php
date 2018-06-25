@@ -2,7 +2,6 @@
 namespace ecomitize\garage\Vehicles;
 
 use ecomitize\garage\Actions\Action;
-use PHPUnit\Runner\Exception;
 
 class Vehicle
 {
@@ -10,7 +9,7 @@ class Vehicle
     private $fuel       = '';
     private $loadObject = '';
     private $supportedMethods = [];
-//  private $action;
+    private static $action = [];
 
     public function __construct($name = '', $fuel = '')
     {
@@ -57,7 +56,7 @@ class Vehicle
     /**
      * @return array
      */
-    public function getSupportedMethods(): array
+    public function getSupportedMethods() : array
     {
         return $this->supportedMethods;
     }
@@ -75,138 +74,28 @@ class Vehicle
     /**
      * @return string
      */
+    public function getObject() : string
+    {
+        return $this->loadObject;
+    }
+
+    /**
+     * @param string $loadObject
+     * @return Vehicle
+     */
+    public function setObject(string $loadObject)
+    {
+        $this->loadObject = $loadObject;
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
     public function ping() : string
     {
         return 'I am ' . $this->getName() .'!';
-    }
-
-    /**
-     * @param string $fuel
-     * @return string
-     * @throws \Exception
-     */
-    public function refuel($fuel = null) : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' refuel ' . ($fuel ? $fuel : $this->fuel);
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function stop() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' stopped';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function move() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' moving';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function musicOn() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' music switched on';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function takeOff() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' took off';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function landing() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' landing';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function fly() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' flying';
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function swim() : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' swimming';
-    }
-
-    /**
-     * @param string $object
-     * @return string
-     * @throws \Exception
-     */
-    public function load($object) : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        $this->loadObject = $object;
-        return $this->getName() . ' load ' . $object;
-    }
-
-    /**
-     * @param string $object
-     * @return string
-     * @throws \Exception
-     */
-    public function emptyLoads($object) : string
-    {
-        if ($this->isSupported(__FUNCTION__)) {
-            throw new \Exception('Not supported');
-        }
-        return $this->getName() . ' unload ' . ($object ? $object : $this->loadObject);
-    }
-
-    private function isSupported($method) : bool
-    {
-        return !in_array($method, $this->supportedMethods);
     }
 
     /**
@@ -215,14 +104,25 @@ class Vehicle
      *
      * @return Vehicle
      */
-    public function addMethod($name, $method) : Vehicle
+    public function addMethod($name, $method = null) : Vehicle
     {
-        $this->{$name} = $method->get();
+        self::$action[static::class][$name] = $method;
         return $this;
     }
 
-    public function __call(string $name, array $args)
+    /**
+     * @param string $name
+     */
+    public function getMethod($name)
     {
-        throw new Exception("Instance method " . $name . " doesn't exist");
+        return self::$action[static::class][$name];
+    }
+
+    public function __call($key, $arguments = [])
+    {
+        if (isset(self::$action[static::class][$key]) && is_callable(self::$action[static::class][$key])) {
+            return call_user_func_array(\Closure::bind(self::$action[static::class][$key], $this), $arguments);
+        }
+        throw new \Exception("Instance method " . $key . " doesn't exist");
     }
 }

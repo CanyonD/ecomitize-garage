@@ -1,17 +1,13 @@
 <?php
-require_once('Vehicles/Vehicle.php');
-require_once('Vehicles/BMW.php');
-require_once('Vehicles/Boat.php');
-require_once('Vehicles/Helicopter.php');
-require_once('Vehicles/Kamaz.php');
-require_once('Vehicles/Horse.php');
-require_once('Objects/BaseObject.php');
-
-//function load ($name) {
-//  var_dump($name);
-//  require_once($name . '.php');
-//}
-//spl_autoload_register('load');
+function requireFolder(string $folder)
+{
+    foreach (glob(__DIR__ . "/" . $folder . "/*.php") as $file) {
+        require_once $file;
+    }
+}
+requireFolder('Objects');
+requireFolder('Actions');
+requireFolder('Vehicles');
 
 $bmw = new ecomitize\garage\Vehicles\BMW();
 echo $bmw->move() . PHP_EOL;

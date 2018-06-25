@@ -1,7 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use PHPUnit\Runner\Exception;
+use ecomitize\garage\Actions\Refuel;
+use ecomitize\garage\Actions\Stopped;
+use ecomitize\garage\Actions\Swim;
 
 class Boat
 {
@@ -23,6 +25,9 @@ class Boat
         $this->vehicle->setName($this->name);
         $this->vehicle->setFuel($this->fuel);
         $this->vehicle->setSupportedMethods($this->methods);
+        $this->vehicle->addMethod($this->methods[0], (new Swim())());
+        $this->vehicle->addMethod($this->methods[1], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[2], (new Refuel())());
     }
 
     public function __call($name, $arguments)

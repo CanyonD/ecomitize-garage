@@ -3,15 +3,15 @@ namespace ecomitize\garage\Actions;
 
 use ecomitize\garage\Vehicles\Vehicle;
 
-class Move implements Action
+class Refuel implements Action
 {
     public function __invoke()
     {
-        return function () {
+        return function ($fuel = null) {
             /**
              * @var Vehicle $this
              */
-            return $this->getName() . ' moving';
+            return $this->getName() . ' refuel ' . ($fuel ? $fuel : $this->getFuel());
         };
     }
 }

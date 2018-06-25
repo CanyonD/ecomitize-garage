@@ -93,30 +93,15 @@ class VehicleTest extends TestCase
     {
         echo PHP_EOL;
         foreach ($object->getSupportedMethods() as $methodName) {
-            try {
-                $reflection = new \ReflectionMethod(Vehicle::class, $methodName);
-                $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
-            } catch (\Exception $e) {
-                $this->fail('Method ' . $methodName . ' not supported');
-            }
-        }
-
-        foreach (get_class_methods(Vehicle::class) as $methodName) {
-            if (preg_match('/(s|g)et*|__|add|ping/', $methodName) ||
-                in_array($methodName, $object->getSupportedMethods())
-            ) {
-                continue;       // Skip for ping, add, setters, getters and constructors
-            }
             $exception = false;
             try {
-                $reflection = new \ReflectionMethod(Vehicle::class, $methodName);
+                $reflection = new \ReflectionFunction($object->getMethod($methodName));
                 $numberParams = $reflection->getNumberOfRequiredParameters();
                 echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
             } catch (\Exception $e) {
                 $exception = true;
             }
-            $this->assertTrue($exception, 'Wrong method ' . $methodName);
+            $this->assertFalse($exception, 'Method ' . $methodName . ' not supported');
         }
     }
 }

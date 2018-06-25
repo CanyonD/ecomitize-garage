@@ -3,15 +3,16 @@ namespace ecomitize\garage\Actions;
 
 use ecomitize\garage\Vehicles\Vehicle;
 
-class Move implements Action
+class Load implements Action
 {
     public function __invoke()
     {
-        return function () {
+        return function ($object) {
             /**
              * @var Vehicle $this
              */
-            return $this->getName() . ' moving';
+            $this->setObject($object);
+            return $this->getName() . ' load ' . $object;
         };
     }
 }

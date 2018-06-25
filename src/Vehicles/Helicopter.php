@@ -1,7 +1,11 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use PHPUnit\Runner\Exception;
+use ecomitize\garage\Actions\Fly;
+use ecomitize\garage\Actions\Landing;
+use ecomitize\garage\Actions\Refuel;
+use ecomitize\garage\Actions\Stopped;
+use ecomitize\garage\Actions\TakeOff;
 
 class Helicopter
 {
@@ -25,6 +29,11 @@ class Helicopter
         $this->vehicle->setName($this->name);
         $this->vehicle->setFuel($this->fuel);
         $this->vehicle->setSupportedMethods($this->methods);
+        $this->vehicle->addMethod($this->methods[0], (new TakeOff())());
+        $this->vehicle->addMethod($this->methods[1], (new Fly())());
+        $this->vehicle->addMethod($this->methods[2], (new Landing())());
+        $this->vehicle->addMethod($this->methods[3], (new Stopped())());
+        $this->vehicle->addMethod($this->methods[4], (new Refuel())());
     }
 
     public function __call($name, $arguments)
