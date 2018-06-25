@@ -6,51 +6,15 @@ class Vehicle
     private $name       = '';
     private $fuel       = '';
     private $loadObject = '';
+    private $supportedMethods = [];
 
-    public const BMW                = 'bmw';
-    public const KAMAZ              = 'kamaz';
-    public const HARLEY_DAVIDSON    = 'harley-davidson';
-    public const BOAT               = 'boat';
-    public const HELICOPTER         = 'helicopter';
-
-    public const FUEL_GAS       = 'gas';
-    public const FUEL_DIESEL    = 'diesel';
-    public const FUEL_PETROL    = 'petrol';
-
-    public const SUPPORTED_METHODS = array(
-        Vehicle::BMW => array(
-            'move',
-            'musicOn',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::BOAT => array(
-            'swim',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::HELICOPTER => array(
-            'takeOff',
-            'fly',
-            'landing',
-            'stop',
-            'refuel'
-        ),
-        Vehicle::KAMAZ => array(
-            'move',
-            'stop',
-            'load',
-            'move',
-            'stop',
-            'emptyLoads',
-            'stop',
-            'refuel'
-        ),
-    );
-
-    public function __construct($name)
+    public function __construct($name, $fuel = '')
     {
         $this->name = $name;
+        $this->fuel = $fuel;
+        if (isset(BaseVehicle::SUPPORTED_METHODS[$name])) {
+            $this->supportedMethods = BaseVehicle::SUPPORTED_METHODS[$name];
+        }
     }
 
     /**
@@ -99,9 +63,13 @@ class Vehicle
     /**
      * @param string $fuel
      * @return string
+     * @throws \Exception
      */
     public function refuel($fuel = null) : string
     {
+        if ($this->isSupported(__FUNCTION__)) {
+            throw new \Exception('Not supported');
+        }
         return $this->getName() . ' refuel ' . ($fuel ? $fuel : $this->fuel);
     }
 
@@ -216,10 +184,8 @@ class Vehicle
         return $this->getName() . ' unload ' . ($object ? $object : $this->loadObject);
     }
 
-    private function isSupported($method)
+    private function isSupported($method) : bool
     {
-//      print_r($method);
-//      print_r($this->name);
-        return !in_array($method, Vehicle::SUPPORTED_METHODS[$this->name]);
+        return !in_array($method, $this->supportedMethods);
     }
 }

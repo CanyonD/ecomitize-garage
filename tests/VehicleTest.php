@@ -1,13 +1,13 @@
 <?php
 namespace unit\ecomitize\garage;
 
+use ecomitize\garage\BaseObject;
+use ecomitize\garage\BaseVehicle;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Exception;
 use ecomitize\garage\Vehicle;
 
 class VehicleTest extends TestCase
 {
-
     /**
      * @var Vehicle $bmw
      */
@@ -28,12 +28,18 @@ class VehicleTest extends TestCase
      */
     private $helicopter;
 
+    /**
+     * @var Vehicle $horse
+     */
+    private $horse;
+
     public function setUp()
     {
-        $this->bmw = new Vehicle(Vehicle::BMW);
-        $this->boat = new Vehicle(Vehicle::BOAT);
-        $this->helicopter = new Vehicle(Vehicle::HELICOPTER);
-        $this->kamaz = new Vehicle(Vehicle::KAMAZ);
+        $this->bmw = new Vehicle(BaseVehicle::BMW, BaseVehicle::FUEL_PETROL);
+        $this->boat = new Vehicle(BaseVehicle::BOAT, BaseVehicle::FUEL_GAS);
+        $this->helicopter = new Vehicle(BaseVehicle::HELICOPTER, BaseVehicle::FUEL_GAS);
+        $this->kamaz = new Vehicle(BaseVehicle::KAMAZ, BaseVehicle::FUEL_DIESEL);
+        $this->horse = new Vehicle(BaseVehicle::HORSE);
     }
 
     public function tearDown()
@@ -42,14 +48,16 @@ class VehicleTest extends TestCase
         $this->boat = null;
         $this->helicopter = null;
         $this->kamaz = null;
+        $this->horse = null;
     }
 
     public function testInit()
     {
-        $this->init($this->bmw, Vehicle::BMW);
-        $this->init($this->boat, Vehicle::BOAT);
-        $this->init($this->helicopter, Vehicle::HELICOPTER);
-        $this->init($this->kamaz, Vehicle::KAMAZ);
+        $this->init($this->bmw, BaseVehicle::BMW);
+        $this->init($this->boat, BaseVehicle::BOAT);
+        $this->init($this->helicopter, BaseVehicle::HELICOPTER);
+        $this->init($this->kamaz, BaseVehicle::KAMAZ);
+        $this->init($this->horse, BaseVehicle::HORSE);
     }
 
     /**
@@ -67,10 +75,11 @@ class VehicleTest extends TestCase
 
     public function testMethods()
     {
-        $this->method($this->bmw, Vehicle::BMW);
-        $this->method($this->boat, Vehicle::BOAT);
-        $this->method($this->helicopter, Vehicle::HELICOPTER);
-        $this->method($this->kamaz, Vehicle::KAMAZ);
+        $this->method($this->bmw, BaseVehicle::BMW);
+        $this->method($this->boat, BaseVehicle::BOAT);
+        $this->method($this->helicopter, BaseVehicle::HELICOPTER);
+        $this->method($this->kamaz, BaseVehicle::KAMAZ);
+        $this->method($this->horse, BaseVehicle::HORSE);
     }
 
     private function method($object, $name)
@@ -78,11 +87,11 @@ class VehicleTest extends TestCase
         $classMethods = get_class_methods($object);
 
         echo PHP_EOL;
-        foreach (Vehicle::SUPPORTED_METHODS[$name] as $methodName) {
+        foreach (BaseVehicle::SUPPORTED_METHODS[$name] as $methodName) {
             try {
                 $reflection = new \ReflectionMethod(get_class($object), $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo $numberParams ? $object->$methodName('stone') . PHP_EOL : $object->$methodName() . PHP_EOL;
+                echo $numberParams ? $object->$methodName(BaseObject::STONE) . PHP_EOL : $object->$methodName() . PHP_EOL;
             } catch (\Exception $e) {
                 $this->fail('Method ' . $methodName . ' not supported');
             }
@@ -90,7 +99,7 @@ class VehicleTest extends TestCase
 
         foreach ($classMethods as $methodName) {
             if (preg_match('/(s|g)et*|__construct|ping/', $methodName) ||
-                in_array($methodName, Vehicle::SUPPORTED_METHODS[$name])
+                in_array($methodName, BaseVehicle::SUPPORTED_METHODS[$name])
             ) {
                 continue;       // Skip for setters, getters and constructors
             }
@@ -98,7 +107,7 @@ class VehicleTest extends TestCase
             try {
                 $reflection = new \ReflectionMethod(get_class($object), $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo $numberParams ? $object->$methodName('stone') . PHP_EOL : $object->$methodName() . PHP_EOL;
+                echo $numberParams ? $object->$methodName(BaseObject::STONE) . PHP_EOL : $object->$methodName() . PHP_EOL;
             } catch (\Exception $e) {
                 $exception = true;
             }

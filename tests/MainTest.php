@@ -1,6 +1,7 @@
 <?php
 namespace unit\ecomitize\garage;
 
+use ecomitize\garage\BaseVehicle;
 use ecomitize\garage\Vehicle;
 use PHPUnit\Framework\TestCase;
 
