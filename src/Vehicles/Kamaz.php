@@ -1,11 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Load;
-use ecomitize\garage\Actions\Move;
-use ecomitize\garage\Actions\Refuel;
-use ecomitize\garage\Actions\Stopped;
-use ecomitize\garage\Actions\EmptyLoad;
+use ecomitize\garage\Actions\{
+	Load, Move, Refuel, Stopped, EmptyLoad
+};
 
 class Kamaz
 {

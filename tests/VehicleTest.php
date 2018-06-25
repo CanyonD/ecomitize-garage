@@ -1,13 +1,10 @@
 <?php
 namespace unit\ecomitize\garage;
 
-use ecomitize\garage\Objects\BaseObject;
-use ecomitize\garage\Vehicles\BMW;
-use ecomitize\garage\Vehicles\Boat;
-use ecomitize\garage\Vehicles\Helicopter;
-use ecomitize\garage\Vehicles\Kamaz;
-use ecomitize\garage\Vehicles\Horse;
-use ecomitize\garage\Vehicles\Vehicle;
+use ecomitize\garage\Objects\Stone;
+use ecomitize\garage\Vehicles\{
+	BMW, Boat, Helicopter, Kamaz, Horse, Vehicle
+};
 use PHPUnit\Framework\TestCase;
 
 class VehicleTest extends TestCase
@@ -97,7 +94,7 @@ class VehicleTest extends TestCase
             try {
                 $reflection = new \ReflectionFunction($object->getMethod($methodName));
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
+                echo ($numberParams ? $object->$methodName((new Stone())()) : $object->$methodName()) . PHP_EOL;
             } catch (\Exception $e) {
                 $exception = true;
             }

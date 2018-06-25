@@ -1,15 +1,13 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Action;
-
 class Vehicle
 {
     private $name       = '';
     private $fuel       = '';
     private $loadObject = '';
     private $supportedMethods = [];
-    private static $action = [];
+    private $action = [];
 
     public function __construct($name = '', $fuel = '')
     {
@@ -100,13 +98,13 @@ class Vehicle
 
     /**
      * @param string $name
-     * @param Action $method
+     * @param $method
      *
      * @return Vehicle
      */
     public function addMethod($name, $method = null) : Vehicle
     {
-        self::$action[static::class][$name] = $method;
+        $this->action[static::class][$name] = $method;
         return $this;
     }
 
@@ -115,13 +113,13 @@ class Vehicle
      */
     public function getMethod($name)
     {
-        return self::$action[static::class][$name];
+        return $this->action[static::class][$name];
     }
 
     public function __call($key, $arguments = [])
     {
-        if (isset(self::$action[static::class][$key]) && is_callable(self::$action[static::class][$key])) {
-            return call_user_func_array(\Closure::bind(self::$action[static::class][$key], $this), $arguments);
+        if (isset($this->action[static::class][$key]) && is_callable($this->action[static::class][$key])) {
+            return call_user_func_array(\Closure::bind($this->action[static::class][$key], $this), $arguments);
         }
         throw new \Exception("Instance method " . $key . " doesn't exist");
     }

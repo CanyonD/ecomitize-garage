@@ -1,9 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Refuel;
-use ecomitize\garage\Actions\Stopped;
-use ecomitize\garage\Actions\Swim;
+use ecomitize\garage\Actions\{
+	Refuel, Stopped, Swim
+};
 
 class Boat
 {

@@ -1,8 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Move;
-use ecomitize\garage\Actions\Stopped;
+use ecomitize\garage\Actions\{
+	Move, Stopped
+};
 
 class Horse
 {

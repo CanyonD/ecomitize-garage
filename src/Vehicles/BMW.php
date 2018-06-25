@@ -1,10 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Move;
-use ecomitize\garage\Actions\MusicOn;
-use ecomitize\garage\Actions\Refuel;
-use ecomitize\garage\Actions\Stopped;
+use ecomitize\garage\Actions\{
+	Move, MusicOn, Refuel, Stopped
+};
 
 class BMW
 {

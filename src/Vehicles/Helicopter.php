@@ -1,11 +1,9 @@
 <?php
 namespace ecomitize\garage\Vehicles;
 
-use ecomitize\garage\Actions\Fly;
-use ecomitize\garage\Actions\Landing;
-use ecomitize\garage\Actions\Refuel;
-use ecomitize\garage\Actions\Stopped;
-use ecomitize\garage\Actions\TakeOff;
+use ecomitize\garage\Actions\{
+	Fly, Landing, Refuel, Stopped, TakeOff
+};
 
 class Helicopter
 {
