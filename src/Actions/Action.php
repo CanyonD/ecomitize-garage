@@ -1,6 +1,7 @@
 <?php
 namespace ecomitize\garage\Actions;
 
-interface Action {
-	public function get();
+interface Action
+{
+    public function get();
 }

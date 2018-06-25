@@ -1,17 +1,15 @@
 <?php
-require_once( 'Vehicles/Vehicle.php' );
-require_once( 'Vehicles/BMW.php' );
-require_once( 'Vehicles/Boat.php' );
-require_once( 'Vehicles/Helicopter.php' );
-require_once( 'Vehicles/Kamaz.php' );
-require_once( 'Vehicles/Horse.php' );
-require_once( 'Objects/BaseObject.php' );
-
-//spl_autoload('*.php');
+require_once('Vehicles/Vehicle.php');
+require_once('Vehicles/BMW.php');
+require_once('Vehicles/Boat.php');
+require_once('Vehicles/Helicopter.php');
+require_once('Vehicles/Kamaz.php');
+require_once('Vehicles/Horse.php');
+require_once('Objects/BaseObject.php');
 
 //function load ($name) {
-//	var_dump($name);
-//	require_once($name . '.php');
+//  var_dump($name);
+//  require_once($name . '.php');
 //}
 //spl_autoload_register('load');
 

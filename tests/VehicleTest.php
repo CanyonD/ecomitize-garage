@@ -86,10 +86,10 @@ class VehicleTest extends TestCase
         $this->method($this->horse);
     }
 
-	/**
-	 * @param Vehicle $object
-	 */
-	private function method($object)
+    /**
+     * @param Vehicle $object
+     */
+    private function method($object)
     {
         echo PHP_EOL;
         foreach ($object->getSupportedMethods() as $methodName) {
@@ -103,7 +103,7 @@ class VehicleTest extends TestCase
         }
 
         foreach (get_class_methods(Vehicle::class) as $methodName) {
-            if (preg_match('/(s|g)et*|__construct|add|ping/', $methodName) ||
+            if (preg_match('/(s|g)et*|__|add|ping/', $methodName) ||
                 in_array($methodName, $object->getSupportedMethods())
             ) {
                 continue;       // Skip for ping, add, setters, getters and constructors
@@ -112,7 +112,7 @@ class VehicleTest extends TestCase
             try {
                 $reflection = new \ReflectionMethod(Vehicle::class, $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-	            echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
+                echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
             } catch (\Exception $e) {
                 $exception = true;
             }
