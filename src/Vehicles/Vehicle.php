@@ -1,5 +1,7 @@
 <?php
-namespace ecomitize\garage;
+namespace ecomitize\garage\Vehicles;
+
+use ecomitize\garage\Actions\Action;
 
 class Vehicle
 {
@@ -7,14 +9,12 @@ class Vehicle
     private $fuel       = '';
     private $loadObject = '';
     private $supportedMethods = [];
+//	private $action;
 
-    public function __construct($name, $fuel = '')
+	public function __construct($name = '', $fuel = '')
     {
         $this->name = $name;
         $this->fuel = $fuel;
-        if (isset(BaseVehicle::SUPPORTED_METHODS[$name])) {
-            $this->supportedMethods = BaseVehicle::SUPPORTED_METHODS[$name];
-        }
     }
 
     /**
@@ -52,6 +52,23 @@ class Vehicle
         $this->fuel = $fuel;
         return $this;
     }
+
+	/**
+	 * @return array
+	 */
+	public function getSupportedMethods(): array {
+		return $this->supportedMethods;
+	}
+
+	/**
+	 * @param array $supportedMethods
+	 * @return Vehicle
+	 */
+	public function setSupportedMethods( array $supportedMethods ) {
+		$this->supportedMethods = $supportedMethods;
+		return $this;
+	}
+
     /**
      * @return string
      */
@@ -188,4 +205,15 @@ class Vehicle
     {
         return !in_array($method, $this->supportedMethods);
     }
+
+	/**
+	 * @param string $name
+	 * @param Action $method
+	 *
+	 * @return Vehicle
+	 */
+	public function addMethod( $name, $method ) : Vehicle {
+		$this->{$name} = $method->get();
+    	return $this;
+	}
 }

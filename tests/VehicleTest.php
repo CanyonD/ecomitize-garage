@@ -1,10 +1,14 @@
 <?php
 namespace unit\ecomitize\garage;
 
-use ecomitize\garage\BaseObject;
-use ecomitize\garage\BaseVehicle;
+use ecomitize\garage\Objects\BaseObject;
+use ecomitize\garage\Vehicles\BMW;
+use ecomitize\garage\Vehicles\Boat;
+use ecomitize\garage\Vehicles\Helicopter;
+use ecomitize\garage\Vehicles\Kamaz;
+use ecomitize\garage\Vehicles\Horse;
+use ecomitize\garage\Vehicles\Vehicle;
 use PHPUnit\Framework\TestCase;
-use ecomitize\garage\Vehicle;
 
 class VehicleTest extends TestCase
 {
@@ -35,11 +39,11 @@ class VehicleTest extends TestCase
 
     public function setUp()
     {
-        $this->bmw = new Vehicle(BaseVehicle::BMW, BaseVehicle::FUEL_PETROL);
-        $this->boat = new Vehicle(BaseVehicle::BOAT, BaseVehicle::FUEL_GAS);
-        $this->helicopter = new Vehicle(BaseVehicle::HELICOPTER, BaseVehicle::FUEL_GAS);
-        $this->kamaz = new Vehicle(BaseVehicle::KAMAZ, BaseVehicle::FUEL_DIESEL);
-        $this->horse = new Vehicle(BaseVehicle::HORSE);
+        $this->bmw = new BMW();
+        $this->boat = new Boat();
+        $this->helicopter = new Helicopter();
+        $this->kamaz = new Kamaz();
+        $this->horse = new Horse();
     }
 
     public function tearDown()
@@ -53,11 +57,11 @@ class VehicleTest extends TestCase
 
     public function testInit()
     {
-        $this->init($this->bmw, BaseVehicle::BMW);
-        $this->init($this->boat, BaseVehicle::BOAT);
-        $this->init($this->helicopter, BaseVehicle::HELICOPTER);
-        $this->init($this->kamaz, BaseVehicle::KAMAZ);
-        $this->init($this->horse, BaseVehicle::HORSE);
+        $this->init($this->bmw, $this->bmw->getName());
+        $this->init($this->boat, $this->boat->getName());
+        $this->init($this->helicopter, $this->helicopter->getName());
+        $this->init($this->kamaz, $this->kamaz->getName());
+        $this->init($this->horse, $this->horse->getName());
     }
 
     /**
@@ -75,39 +79,40 @@ class VehicleTest extends TestCase
 
     public function testMethods()
     {
-        $this->method($this->bmw, BaseVehicle::BMW);
-        $this->method($this->boat, BaseVehicle::BOAT);
-        $this->method($this->helicopter, BaseVehicle::HELICOPTER);
-        $this->method($this->kamaz, BaseVehicle::KAMAZ);
-        $this->method($this->horse, BaseVehicle::HORSE);
+        $this->method($this->bmw);
+        $this->method($this->boat);
+        $this->method($this->helicopter);
+        $this->method($this->kamaz);
+        $this->method($this->horse);
     }
 
-    private function method($object, $name)
+	/**
+	 * @param Vehicle $object
+	 */
+	private function method($object)
     {
-        $classMethods = get_class_methods($object);
-
         echo PHP_EOL;
-        foreach (BaseVehicle::SUPPORTED_METHODS[$name] as $methodName) {
+        foreach ($object->getSupportedMethods() as $methodName) {
             try {
-                $reflection = new \ReflectionMethod(get_class($object), $methodName);
+                $reflection = new \ReflectionMethod(Vehicle::class, $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo $numberParams ? $object->$methodName(BaseObject::STONE) . PHP_EOL : $object->$methodName() . PHP_EOL;
+                echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
             } catch (\Exception $e) {
                 $this->fail('Method ' . $methodName . ' not supported');
             }
         }
 
-        foreach ($classMethods as $methodName) {
-            if (preg_match('/(s|g)et*|__construct|ping/', $methodName) ||
-                in_array($methodName, BaseVehicle::SUPPORTED_METHODS[$name])
+        foreach (get_class_methods(Vehicle::class) as $methodName) {
+            if (preg_match('/(s|g)et*|__construct|add|ping/', $methodName) ||
+                in_array($methodName, $object->getSupportedMethods())
             ) {
-                continue;       // Skip for setters, getters and constructors
+                continue;       // Skip for ping, add, setters, getters and constructors
             }
             $exception = false;
             try {
-                $reflection = new \ReflectionMethod(get_class($object), $methodName);
+                $reflection = new \ReflectionMethod(Vehicle::class, $methodName);
                 $numberParams = $reflection->getNumberOfRequiredParameters();
-                echo $numberParams ? $object->$methodName(BaseObject::STONE) . PHP_EOL : $object->$methodName() . PHP_EOL;
+	            echo ($numberParams ? $object->$methodName(BaseObject::STONE) : $object->$methodName()) . PHP_EOL;
             } catch (\Exception $e) {
                 $exception = true;
             }

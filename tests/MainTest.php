@@ -1,8 +1,7 @@
 <?php
 namespace unit\ecomitize\garage;
 
-use ecomitize\garage\BaseVehicle;
-use ecomitize\garage\Vehicle;
+use ecomitize\garage\Vehicles\Vehicle;
 use PHPUnit\Framework\TestCase;
 
 class MainTest extends TestCase
@@ -44,7 +43,7 @@ class MainTest extends TestCase
 
     public function testClassVehicle() : void
     {
-        $this->assertEquals(get_class($this->tmpClass), 'ecomitize\garage\Vehicle');
+        $this->assertEquals(get_class($this->tmpClass), 'ecomitize\garage\Vehicles\Vehicle');
         $this->assertEquals($this->tmpClass->getName(), $this->tmpName);
     }
 }

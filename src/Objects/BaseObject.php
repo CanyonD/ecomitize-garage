@@ -1,5 +1,5 @@
 <?php
-namespace ecomitize\garage;
+namespace ecomitize\garage\Objects;
 
 class BaseObject
 {
